@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "173227682960",
+    "project_id": "crm-test-c493e",
+    "storage_bucket": "crm-test-c493e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173227682960:android:4cba7ce783d3f61fab7c15",
+        "android_client_info": {
+          "package_name": "com.example.crm_firebase_test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLdlMXAzg64uX-0RJru9AXbAizeATD9SA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
