@@ -1,8 +1,9 @@
 import 'package:crm_firebase_test/homePage.dart';
+import 'package:crm_firebase_test/modals/user_modal.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 class ApiServices {
   Future<void> signInWithEmail(
@@ -10,9 +11,12 @@ class ApiServices {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+      // ignore: use_build_context_synchronously
       await addUserToDesignerCollection(userCredential.user, context);
     } catch (e) {
-      print("Failed to sign in with email and password:$e");
+      if (kDebugMode) {
+        print("Failed to sign in with email and password:$e");
+      }
     }
   }
 
@@ -24,17 +28,31 @@ class ApiServices {
     CollectionReference designers =
         FirebaseFirestore.instance.collection("designers");
     var designer = await designers.doc(user.uid).get();
+    final regDesigner = userModal(id: user.uid, email: user.email.toString());
 
     if (designer.exists) {
       Navigator.push(
-          context, CupertinoPageRoute(builder: (context) => const HomePage()));
-    } else {
-      await designers.doc(user.uid).set({'email': user.email}).then(
-        (value) => Navigator.push(
-          context,
-          CupertinoPageRoute(builder: (context) => const HomePage()),
+        // ignore: use_build_context_synchronously
+        context,
+        CupertinoPageRoute(
+          builder: (context) => const HomePage(),
         ),
       );
+    } else {
+      try {
+        await designers.doc(user.uid).set(regDesigner.toJson()).then(
+              (value) => Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (context) => const HomePage(),
+                ),
+              ),
+            );
+      } catch (e) {
+        if (kDebugMode) {
+          print("Error adding designer to collection :$e");
+        }
+      }
     }
   }
 
@@ -42,17 +60,23 @@ class ApiServices {
     await FirebaseAuth.instance.signOut();
   }
 
-  Future<void> sendMessage(
-      String chatId, String senderId, String messageText) async {
-    CollectionReference messages = FirebaseFirestore.instance
-        .collection('Chats')
-        .doc(chatId)
-        .collection('messages');
-
-    await messages.add({
-      'senderId': senderId,
-      'messageText': messageText,
-      'timestamp': FieldValue.serverTimestamp(),
-    });
+  Future<void> sendMessageToCustomer(
+    String designerId,
+    String customerId,
+    String message,
+  ) async {
+    try {
+      await FirebaseFirestore.instance.collection('chats').doc().set({
+        'senderId':
+            designerId, // Assuming designerId is the ID of the current designer
+        'receiverId': customerId,
+        'message': message,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error sending message to customer: $e");
+      }
+    }
   }
 }
