@@ -40,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
             onPressed: () {
               ApiServices apiServices = ApiServices();
               apiServices.signInWithEmail(
-                  emailController.text, passController.text, context);
+                  "abc123@gmail.com", "abc123", context);
             },
             style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
