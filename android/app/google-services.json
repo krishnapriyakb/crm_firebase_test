@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "173227682960",
-    "project_id": "crm-test-c493e",
-    "storage_bucket": "crm-test-c493e.appspot.com"
+    "project_number": "624813111806",
+    "project_id": "teresa-crm-67199",
+    "storage_bucket": "teresa-crm-67199.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:173227682960:android:4cba7ce783d3f61fab7c15",
+        "mobilesdk_app_id": "1:624813111806:android:de8a91985ac946a89de8af",
         "android_client_info": {
           "package_name": "com.example.crm_firebase_test"
         }
@@ -15,7 +15,26 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCLdlMXAzg64uX-0RJru9AXbAizeATD9SA"
+          "current_key": "AIzaSyC86ECNOVfQst5ioJPG0WWaba3-njEXHUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:624813111806:android:57f737cd70bac67f9de8af",
+        "android_client_info": {
+          "package_name": "com.example.teresa_crm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC86ECNOVfQst5ioJPG0WWaba3-njEXHUw"
         }
       ],
       "services": {

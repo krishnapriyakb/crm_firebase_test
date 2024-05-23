@@ -1,36 +1,32 @@
-import 'dart:convert';
-
-DesignerModal chatUserModalFromJson(String str) =>
-    DesignerModal.fromJson(json.decode(str));
-
-String chatUserModalToJson(DesignerModal data) => json.encode(
-      data.toJson(),
-    );
-
 class DesignerModal {
-  String id;
-
-  String email;
+  String uId;
+  int nId;
+  String cEmail;
   List<String> assignedCustomers;
-  String accId;
+  String cName;
 
-  DesignerModal(
-      {required this.id,
-      required this.email,
-      required this.assignedCustomers,
-      required this.accId});
+  DesignerModal({
+    required this.uId,
+    required this.nId,
+    required this.cEmail,
+    required this.assignedCustomers,
+    required this.cName,
+  });
 
   factory DesignerModal.fromJson(Map<String, dynamic> json) => DesignerModal(
-      id: json["id"],
-      email: json["email"],
-      assignedCustomers:
-          (json['assignedCustomers'] as List<dynamic>).cast<String>(),
-      accId: json["accId"]);
+        uId: json["uId"] ?? '',
+        nId: json["nId"] ?? '',
+        cEmail: json["cEmail"] ?? '',
+        assignedCustomers:
+            (json['assignedCustomers'] as List<dynamic>?)?.cast<String>() ?? [],
+        cName: json["cName"] ?? '',
+      );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "email": email,
+        "uId": uId,
+        "nId": nId,
+        "cEmail": cEmail,
         "assignedCustomers": assignedCustomers,
-        "accId": accId
+        "cName": cName,
       };
 }

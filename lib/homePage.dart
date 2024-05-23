@@ -1,7 +1,5 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crm_firebase_test/assign_page.dart';
 import 'package:crm_firebase_test/chatPage.dart';
 import 'package:crm_firebase_test/loginPage.dart';
 import 'package:crm_firebase_test/modals/customer_modal.dart';
@@ -35,6 +33,7 @@ class _HomePageState extends State<HomePage> {
 
   fetchDesignerData() async {
     designerModal = await ApiServices.getDesignerData();
+    log(designerModal!.cEmail);
     assignedCustomersList = designerModal!.assignedCustomers;
     log(assignedCustomersList.toString());
     setState(() {
@@ -50,17 +49,19 @@ class _HomePageState extends State<HomePage> {
           : Scaffold(
               appBar: AppBar(
                 actions: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => const AssignPage()));
-                    },
-                    icon: const Icon(Icons.done_all),
-                  )
+                  // IconButton(
+                  //   onPressed: () {
+                  //     Navigator.push(
+                  //         context,
+                  //         CupertinoPageRoute(
+                  //             builder: (context) => const AssignPage()));
+                  //   },
+                  //   icon: const Icon(Icons.done_all),
+                  // )
                 ],
-                title: Text(designerModal!.email.toString()),
+                title: Text(
+                  designerModal!.cEmail,
+                ),
               ),
               floatingActionButton: FloatingActionButton(
                 onPressed: () {
@@ -78,7 +79,7 @@ class _HomePageState extends State<HomePage> {
               ),
               body: StreamBuilder(
                 stream: FirebaseFirestore.instance
-                    .collection('customers')
+                    .collection('TblUser')
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
@@ -96,8 +97,8 @@ class _HomePageState extends State<HomePage> {
                       .toList();
                   List<CustomerModal> assignedCustomersModalList = customers
                       .where(
-                        (customer) =>
-                            assignedCustomersList.contains(customer.id),
+                        (customer) => assignedCustomersList
+                            .contains(customer.nId.toString()),
                       )
                       .toList();
 
@@ -123,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                                 },
                                 tileColor: Colors.green[100],
                                 title: Text(
-                                    assignedCustomersModalList[index].email),
+                                    assignedCustomersModalList[index].cEmail),
                               ),
                             );
                           });

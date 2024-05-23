@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:crm_firebase_test/modals/customer_modal.dart';
 import 'package:crm_firebase_test/modals/message_modal.dart';
 import 'package:crm_firebase_test/services/apis.dart';
@@ -17,6 +15,14 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   List<MessageModal> messages = [];
+  List<String> imageUrls = [
+    "https://i.pinimg.com/564x/46/2e/f7/462ef74ca42f640000e5b5e4cf3dfcad.jpg",
+    "https://i.pinimg.com/564x/67/91/03/679103895a7f37e882f493612d4bc9bf.jpg"
+  ];
+  List<String> bodyText = [
+    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book"
+  ];
+  List<String> audioUrls = [];
   final TextEditingController _messageController = TextEditingController();
   User user = FirebaseAuth.instance.currentUser!;
 
@@ -24,7 +30,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.customer.email),
+        title: Text(widget.customer.cEmail),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -44,7 +50,6 @@ class _ChatPageState extends State<ChatPage> {
                       );
                     case ConnectionState.done:
                     case ConnectionState.active:
-                      log(data![0].data().toString());
                       messages = data
                               ?.map((e) => MessageModal.fromJson(e.data()))
                               .toList() ??
@@ -60,7 +65,9 @@ class _ChatPageState extends State<ChatPage> {
                           ),
                           itemBuilder: (context, index) {
                             return (messages[index].type == MessageType.widget)
-                                ? const CustomCarousel()
+                                ? CustomCarousel(
+                                    message: messages[index],
+                                  )
                                 : Text(messages[index].message);
                           },
                         );
@@ -94,6 +101,7 @@ class _ChatPageState extends State<ChatPage> {
                   width: 20,
                 ),
                 Expanded(
+                  flex: 1,
                   child: ElevatedButton(
                     onPressed: () {
                       // apiServices.sendMessageToCustomer(
@@ -102,7 +110,26 @@ class _ChatPageState extends State<ChatPage> {
                           _messageController.text, MessageType.text);
                       _messageController.clear();
                     },
-                    child: const Text("send"),
+                    child: const Icon(Icons.send),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  flex: 1,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      ApiServices.sendCustomWidget(
+                          widget.customer,
+                          MessageType.widget,
+                          imageUrls,
+                          bodyText,
+                          audioUrls,
+                          "Material",
+                          "");
+                    },
+                    child: const Icon(Icons.widgets),
                   ),
                 ),
               ],

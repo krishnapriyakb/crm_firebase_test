@@ -6,18 +6,33 @@ CustomerModal chatUserModalFromJson(String str) =>
 String chatUserModalToJson(CustomerModal data) => json.encode(data.toJson());
 
 class CustomerModal {
-  String id;
-  String email;
+  String uId;
+  String cEmail;
   List assignedDesigner;
+  String cName;
+  int nId;
 
-  CustomerModal(
-      {required this.id, required this.email, required this.assignedDesigner});
+  CustomerModal({
+    required this.uId,
+    required this.cEmail,
+    required this.assignedDesigner,
+    required this.cName,
+    required this.nId,
+  });
 
   factory CustomerModal.fromJson(Map<String, dynamic> json) => CustomerModal(
-      id: json["id"],
-      email: json["email"],
-      assignedDesigner: json['assignedDesigner']);
+        uId: json["uId"] ?? '',
+        cEmail: json["cEmail"] ?? '',
+        assignedDesigner: json['assignedDesigner'] ?? [],
+        cName: json['cName'] ?? '',
+        nId: json['nId'] ?? 0,
+      );
 
-  Map<String, dynamic> toJson() =>
-      {"id": id, "email": email, "assignedDesinger": assignedDesigner};
+  Map<String, dynamic> toJson() => {
+        "uId": uId,
+        "cEmail": cEmail,
+        "assignedDesigner": assignedDesigner,
+        "cName": cName,
+        "nId": nId,
+      };
 }

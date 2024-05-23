@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:crm_firebase_test/homePage.dart';
 import 'package:crm_firebase_test/modals/customer_modal.dart';
 import 'package:crm_firebase_test/modals/message_modal.dart';
@@ -35,13 +37,14 @@ class ApiServices {
       return;
     }
     CollectionReference designers =
-        FirebaseFirestore.instance.collection("designers");
+        FirebaseFirestore.instance.collection("TblDesigners");
     var designer = await designers.doc(user.uid).get();
     final regDesigner = DesignerModal(
-        id: user.uid,
-        email: user.email.toString(),
+        nId: 0,
+        uId: user.uid,
+        cEmail: user.email.toString(),
         assignedCustomers: [],
-        accId: '');
+        cName: '');
 
     if (designer.exists) {
       Navigator.push(
@@ -71,12 +74,14 @@ class ApiServices {
 
   static Future<DesignerModal?> getDesignerData() async {
     try {
+      log(currentDesigner.uid);
       final designerDoc = await fireStore
-          .collection('designers')
+          .collection('TblDesigners')
           .doc(currentDesigner.uid)
           .get();
       if (designerDoc.exists) {
         me = DesignerModal.fromJson(designerDoc.data()!);
+        log(me.cEmail.toString());
         return me;
       } else {
         return null;
@@ -89,10 +94,10 @@ class ApiServices {
     }
   }
 
-  static String getConversationId(String customerId) =>
-      currentDesigner.uid.hashCode <= customerId.hashCode
-          ? '${currentDesigner.uid}_$customerId'
-          : '${customerId}_${currentDesigner.uid}';
+  static String getConversationId(String customernId) =>
+      me.nId.hashCode <= customernId.hashCode
+          ? '${me.nId}_$customernId'
+          : '${customernId}_${currentDesigner.uid}';
 
   static Future<void> sendMessage(
       CustomerModal customer, String msg, MessageType type) async {
@@ -103,18 +108,44 @@ class ApiServices {
             bodyText: [],
             audioUrls: [],
             confirmationStatus: 0,
-            confirmationType: "Material"),
-        toId: customer.id,
+            confirmationType: ""),
+        toId: customer.nId.toString(),
         dlvryTime: time,
-        frId: currentDesigner.uid,
+        frId: me.nId.toString(),
         message: msg,
         type: type);
 
-    final ref = fireStore
-        .collection('chats/${getConversationId(customer.id)}/messages/');
+    final ref = fireStore.collection(
+        'TblChats/${getConversationId(customer.nId.toString())}/messages/');
     ref.doc(time).set(message.toJson());
   }
 
+  static Future<void> sendCustomWidget(
+      CustomerModal customer,
+      MessageType type,
+      List<String> imageUrls,
+      List<String> bodyText,
+      List<String> audioUrls,
+      String confirmationType,
+      String msg) async {
+    final time = DateTime.now().millisecondsSinceEpoch.toString();
+    final MessageModal message = MessageModal(
+        customWidgets: CustomWidgets(
+            imageUrls: imageUrls,
+            bodyText: bodyText,
+            audioUrls: audioUrls,
+            confirmationStatus: 0,
+            confirmationType: confirmationType),
+        toId: customer.nId.toString(),
+        dlvryTime: time,
+        frId: me.nId.toString(),
+        message: msg,
+        type: type);
+
+    final ref = fireStore.collection(
+        'TblChats/${getConversationId(customer.nId.toString())}/messages/');
+    ref.doc(time).set(message.toJson());
+  }
   // Future<void> sendMessageToCustomer(
   //   String designerId,
   //   String customerId,
@@ -138,14 +169,15 @@ class ApiServices {
   static Stream<QuerySnapshot<Map<String, dynamic>>> getAllMessages(
       CustomerModal customer) {
     return fireStore
-        .collection('chats/${getConversationId(customer.id)}/messages/')
+        .collection(
+            'TblChats/${getConversationId(customer.nId.toString())}/messages/')
         .orderBy('dlvryTime', descending: true)
         .snapshots();
   }
 
   Future<List<CustomerModal>> fetchAllCustomers() async {
     QuerySnapshot snapshot =
-        await FirebaseFirestore.instance.collection('customers').get();
+        await FirebaseFirestore.instance.collection('TblUser').get();
 
     List<CustomerModal> customers = snapshot.docs.map((doc) {
       return CustomerModal.fromJson(doc.data() as Map<String, dynamic>);
@@ -156,7 +188,7 @@ class ApiServices {
 
   Future<List<DesignerModal>> fetchAllDesigners() async {
     QuerySnapshot snapshot =
-        await FirebaseFirestore.instance.collection('designers').get();
+        await FirebaseFirestore.instance.collection('TblDesigners').get();
 
     List<DesignerModal> designers = snapshot.docs.map((doc) {
       return DesignerModal.fromJson(doc.data() as Map<String, dynamic>);
@@ -168,12 +200,12 @@ class ApiServices {
   Future<void> assignDesignerToCustomer(
       String designerId, String customerId) async {
     // Add designerId to the assignedDesigner list in Customer collection
-    await fireStore.collection('customers').doc(customerId).update({
+    await fireStore.collection('TblUser').doc(customerId).update({
       'assignedDesigner': FieldValue.arrayUnion([designerId]),
     });
 
     // Add customerId to the assignedCustomers list in Designer collection
-    await fireStore.collection('designers').doc(designerId).update({
+    await fireStore.collection('TblDesigners').doc(designerId).update({
       'assignedCustomers': FieldValue.arrayUnion([customerId]),
     });
   }

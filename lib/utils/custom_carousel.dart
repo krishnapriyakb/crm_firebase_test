@@ -1,18 +1,15 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:crm_firebase_test/modals/message_modal.dart';
 import 'package:flutter/material.dart';
 
 class CustomCarousel extends StatefulWidget {
-  const CustomCarousel({super.key});
+  final MessageModal message;
+  const CustomCarousel({super.key, required this.message});
   @override
   State<CustomCarousel> createState() => _CustomCarouselState();
 }
 
 class _CustomCarouselState extends State<CustomCarousel> {
-  final List<String> images = [
-    'https://images.unsplash.com/photo-1626818590159-04cb9274a5e0?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    'https://images.unsplash.com/photo-1559034750-cdab70a66b8e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    'https://images.unsplash.com/photo-1595868321403-bac51fbdeb97?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  ];
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -21,13 +18,17 @@ class _CustomCarouselState extends State<CustomCarousel> {
         padding: const EdgeInsets.symmetric(horizontal: 60),
         child: Column(
           children: [
+            Text(
+              widget.message.customWidgets.confirmationType,
+              style: const TextStyle(fontSize: 20),
+            ),
             CarouselSlider(
               options: CarouselOptions(
                 aspectRatio: 16 / 9,
                 autoPlay: true,
                 enlargeCenterPage: true,
               ),
-              items: images.map((url) {
+              items: widget.message.customWidgets.imageUrls.map((url) {
                 return Builder(
                   builder: (BuildContext context) {
                     return Container(
@@ -45,9 +46,9 @@ class _CustomCarouselState extends State<CustomCarousel> {
                 );
               }).toList(),
             ),
-            const Text(
-              "loreum ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-              style: TextStyle(fontWeight: FontWeight.w300),
+            Text(
+              widget.message.customWidgets.bodyText[0].toString(),
+              style: const TextStyle(fontWeight: FontWeight.w300),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -67,7 +68,9 @@ class _CustomCarouselState extends State<CustomCarousel> {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green[100],
                         foregroundColor: Colors.black),
-                    onPressed: () {},
+                    onPressed: () {
+                      widget.message.customWidgets.confirmationStatus = 1;
+                    },
                     child: const Text("Accept"))
               ],
             )

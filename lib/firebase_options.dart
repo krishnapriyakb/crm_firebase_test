@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCLdlMXAzg64uX-0RJru9AXbAizeATD9SA',
-    appId: '1:173227682960:android:4cba7ce783d3f61fab7c15',
-    messagingSenderId: '173227682960',
-    projectId: 'crm-test-c493e',
-    storageBucket: 'crm-test-c493e.appspot.com',
+    apiKey: 'AIzaSyC86ECNOVfQst5ioJPG0WWaba3-njEXHUw',
+    appId: '1:624813111806:android:de8a91985ac946a89de8af',
+    messagingSenderId: '624813111806',
+    projectId: 'teresa-crm-67199',
+    storageBucket: 'teresa-crm-67199.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBZy9nCnlJ2nXapalslfi-79zQ2lAdU8i4',
-    appId: '1:173227682960:ios:ecae037f67225a14ab7c15',
-    messagingSenderId: '173227682960',
-    projectId: 'crm-test-c493e',
-    storageBucket: 'crm-test-c493e.appspot.com',
+    apiKey: 'AIzaSyAldbbfJMIEBeARBzyOVhtVmBJSn9L3g88',
+    appId: '1:624813111806:ios:d472ee75ab3a10309de8af',
+    messagingSenderId: '624813111806',
+    projectId: 'teresa-crm-67199',
+    storageBucket: 'teresa-crm-67199.appspot.com',
     iosBundleId: 'com.example.crmFirebaseTest',
   );
 }
