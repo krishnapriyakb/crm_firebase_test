@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:crm_firebase_test/homePage.dart';
 import 'package:crm_firebase_test/modals/customer_modal.dart';
 import 'package:crm_firebase_test/modals/message_modal.dart';
@@ -44,7 +43,8 @@ class ApiServices {
         uId: user.uid,
         cEmail: user.email.toString(),
         assignedCustomers: [],
-        cName: '');
+        cName: '',
+        pushToken: '');
 
     if (designer.exists) {
       Navigator.push(
