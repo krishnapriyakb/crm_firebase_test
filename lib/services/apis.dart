@@ -75,10 +75,8 @@ class ApiServices {
   static Future<DesignerModal?> getDesignerData() async {
     try {
       log(currentDesigner.uid);
-      final designerDoc = await fireStore
-          .collection('TblDesigners')
-          .doc(currentDesigner.uid)
-          .get();
+      final designerDoc =
+          await fireStore.collection('TblDesigners').doc("100").get();
       if (designerDoc.exists) {
         me = DesignerModal.fromJson(designerDoc.data()!);
         log(me.cEmail.toString());
@@ -97,7 +95,7 @@ class ApiServices {
   static String getConversationId(String customernId) =>
       me.nId.hashCode <= customernId.hashCode
           ? '${me.nId}_$customernId'
-          : '${customernId}_${currentDesigner.uid}';
+          : '${customernId}_${me.nId}';
 
   static Future<void> sendMessage(
       CustomerModal customer, String msg, MessageType type) async {

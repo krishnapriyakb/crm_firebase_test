@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crm_firebase_test/assign_page.dart';
 import 'package:crm_firebase_test/chatPage.dart';
 import 'package:crm_firebase_test/loginPage.dart';
 import 'package:crm_firebase_test/modals/customer_modal.dart';
@@ -48,16 +49,16 @@ class _HomePageState extends State<HomePage> {
           ? const Center(child: CircularProgressIndicator())
           : Scaffold(
               appBar: AppBar(
-                actions: const [
-                  // IconButton(
-                  //   onPressed: () {
-                  //     Navigator.push(
-                  //         context,
-                  //         CupertinoPageRoute(
-                  //             builder: (context) => const AssignPage()));
-                  //   },
-                  //   icon: const Icon(Icons.done_all),
-                  // )
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => const AssignPage()));
+                    },
+                    icon: const Icon(Icons.done_all),
+                  )
                 ],
                 title: Text(
                   designerModal!.cEmail,
